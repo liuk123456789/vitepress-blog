@@ -6,36 +6,22 @@
     "baseUrl": ".",
     "rootDir": ".",
     "module": "esnext",
-    "moduleResolution": "Bundler",
-    "paths": {
-      "@vueuse/core": ["./packages/core/index.ts"],
-      "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/docs-utils": ["./packages/.vitepress/plugins/utils.ts"],
-      "@vueuse/integrations": ["./packages/integrations/index.ts"],
-      "@vueuse/metadata": ["./packages/metadata/index.ts"],
-      "@vueuse/math": ["./packages/math/index.ts"],
-      "@vueuse/shared": ["./packages/shared/index.ts"],
-      "@vueuse/shared/*": ["./packages/shared/*"]
-    },
-    "resolveJsonModule": true,
-    "types": [
-      "vitest",
-      "@types/web-bluetooth",
-      "vitest-browser-vue",
-      "@vitest/browser/providers/playwright"
-    ],
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "declaration": true,
-    "declarationDir": "./types",
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
   "include": [
-    "/docs/src/*"
+    ".vitepress/*.mts",
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.vue",
+    "src/*.mts",
+    "src/**/*.ts",
+    "src/**/*.vue"
   ],
-  "exclude": ["node_modules/*"]
+  "exclude": ["node_modules"]
 }

@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from 'vitepress';
 
-import { search as zhSearch } from './zh.mts';
+import { search as zhSearch } from './zh.mjs';
 
-import { withPwa } from '@vite-pwa/vitepress'
+import { withPwa } from '@vite-pwa/vitepress';
 
 // import { zh } from './zh.mts';
 
@@ -10,6 +10,9 @@ import { withPwa } from '@vite-pwa/vitepress'
 export default withPwa(defineConfig({
   title: "Kona Blog",
   description: "Learning knows no bounds",
+  head: {
+    [link, {rel: 'icon',href: ''}]
+    },
   srcDir: 'src',
   ignoreDeadLinks: true,
   locales: {
