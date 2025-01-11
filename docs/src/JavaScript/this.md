@@ -1,5 +1,5 @@
 ---
-outline: deep：
+outline: deep
 ---
 
 :::warning 参考来源：你不知道的JavaScript
@@ -22,27 +22,27 @@ outline: deep：
 
 ```javascript
 function baz() {
-    // 当前调用栈：baz
-    // 因此，当前调用位置是全局作用域
-    
-    console.log('baz');
-    bar() // <-- bar的调用位置
+  // 当前调用栈：baz
+  // 因此，当前调用位置是全局作用域
+
+  console.log('baz')
+  bar() // <-- bar的调用位置
 }
 
 function bar() {
-    // 当前调用栈 baz -> bar
-    // 因此当前调用位置在baz中
-    console.log('bar');
-    foo(); // <-- foo的调用位置
+  // 当前调用栈 baz -> bar
+  // 因此当前调用位置在baz中
+  console.log('bar')
+  foo() // <-- foo的调用位置
 }
 
 function foo() {
-    // 当前调用栈 baz -> bar -> foo
-    // 因此当前调用位置在bar中
-    console.log('foo')
+  // 当前调用栈 baz -> bar -> foo
+  // 因此当前调用位置在bar中
+  console.log('foo')
 }
 
-baz(); // <-- baz的调用位置
+baz() // <-- baz的调用位置
 ```
 
 #### 2.2 绑定规则
@@ -51,27 +51,25 @@ baz(); // <-- baz的调用位置
 
    ```javascript
    function foo() {
-   	console.log(this.a)
+     console.log(this.a)
    }
-   
-   var a = 2
-   foo(); // 2
+
+   lconst a = 2
+   foo() // 2
    ```
 
    `foo`被调用时，`this.a`被解析成了全局变量`a`，因为在`this`指向了全局对象，因为`foo`是不带任何修饰符的函数进行调用，特别说的一点就是如果使用严格模式（`use strict`），那么`this`指向`undefined`
-
-   
 
 2. **隐式绑定**
 
    ```javascript
    function foo() {
-       console.log(this.a)
+     console.log(this.a)
    }
-   
-   var obj = {
-       a: 2,
-       foo: foo
+
+   lconst obj = {
+     a: 2,
+     foo: foo
    }
    obj.foo()
    ```
@@ -89,40 +87,36 @@ baz(); // <-- baz的调用位置
    特别注意的是：对象属性引用链中只有最顶层或者说最后一层会影响调用位置
 
    ```javascript
-   function foo(){
-       console.log(this.a)
+   function foo() {
+     console.log(this.a)
    }
-   
-   var obj2 = {
-       a: 42,
-       foo: foo
+
+   lconst obj2 = {
+     a: 42,
+     foo: foo
    }
-   
-   var obj1 = {
-       a: 2,
-       obj2: obj2
+
+   leconst obj1 = {
+     a: 2,
+     obj2: obj2
    }
-   
-   obj1.obj2.foo(); // 42 因为obj2是最后调用foo的
+   obj1.obj2.foo() // 42 因为obj2是最后调用foo的
    ```
 
    **隐式丢失**
 
    ```javascript
-   function foo(){
-       console.log(this.a)
+   function foo() {
+     console.log(this.a)
    }
-   
-   var obj = {
-       a: 2,
-       foo: foo
+
+   lconst obj = {
+     a: 2,
+     foo: foo
    }
-   
-   var bar = obj.foo
-   
-   var a = 'oops, global'
-   
-   bar(); // 'oops, global'
+
+   leconst bar = obj.foo
+   letconst a = 'oops, global'bar() // 'oops, global'
    ```
 
    虽然`bar`是`obj.foo`的一个引用，但是实际上，它引用的是 `foo` 函数本身，因此此时的` bar()` 其实是一个不带任何修饰的函数调用，因此应用了`默认绑定`
@@ -131,18 +125,18 @@ baz(); // <-- baz的调用位置
 
    ```javascript
    function foo() {
-   	console.log( this.a );
+     console.log(this.a)
    }
    function doFoo(fn) {
-   	// fn 其实引用的是 foo
-   	fn(); // <-- 调用位置！
+     // fn 其实引用的是 foo
+     fn() // <-- 调用位置！
    }
-   var obj = {
-   	a: 2,
-   	foo: foo
-   };
-   var a = "oops, global"; // a 是全局对象的属性
-   doFoo( obj.foo ); // "oops, global"
+   const obj = {
+     a: 2,
+     foo
+   }
+   const a = 'oops, global' // a 是全局对象的属性
+   doFoo(obj.foo) // "oops, global"
    ```
 
    参数传递其实就是一种隐式赋值，因此我们传入函数时也会被隐式赋值
@@ -150,14 +144,14 @@ baz(); // <-- baz的调用位置
 3. **显示绑定**
 
    ```javascript
-   function foo(){
-       console.log(this.a)
+   function foo() {
+     console.log(this.a)
    }
-   
-   var obj = {
-       a: 2
+
+   lconst obj = {
+     a: 2
    }
-   
+
    foo.call(obj)
    ```
 
@@ -167,19 +161,17 @@ baz(); // <-- baz的调用位置
 
    :::
 
-   
-
    ```javascript
-   function fn(){
-       console.log(this.a)
+   function fn() {
+     console.log(this.a)
    }
-   var obj = {
-       a : 1,
-       fn : fn
-   };
-   var bar  = obj.fn;
-   bar() //undefined
-   bar.call(obj) //1
+   const obj = {
+     a: 1,
+     fn
+   }
+   const bar = obj.fn
+   bar() // undefined
+   bar.call(obj) // 1
    ```
 
    为了解决此问题，所以便有了`硬绑定`
@@ -188,21 +180,21 @@ baz(); // <-- baz的调用位置
 
    ```javascript
    function foo() {
-   	console.log( this.a );
+     console.log(this.a)
    }
-   
-   var obj = {
-   	a:2
-   };
-   
-   var bar = function() {
-   	foo.call( obj );
-   };
-   
-   bar(); // 2
-   setTimeout( bar, 100 ); // 2
+
+   lconst obj = {
+     a: 2
+   }
+
+   vletbar = function () {
+     foo.call(obj))
+   }
+
+   bar() // 2
+   setTimeout(bar, 100)) // 2
    // 硬绑定的 bar 不可能再修改它的 this
-   bar.call( window ); // 2
+   barcall(window))// 2
    ```
 
    们创建了函数 `bar()`，并在它的内部手动调用 了 `foo.call(obj)`，因此强制把` foo` 的 `this` 绑定到了` obj`。无论之后如何调用函数 `bar`，它 总会手动在 `obj` 上调用 `foo`。这种绑定是一种显式的强制绑定，因此我们称之为`硬绑定`
@@ -214,4 +206,3 @@ baz(); // <-- baz的调用位置
 #### 2.4 绑定例外
 
 #### 2.5 this词法
-
