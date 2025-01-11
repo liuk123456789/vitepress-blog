@@ -4,14 +4,15 @@ import { search as zhSearch } from './zh.mts';
 
 import { withPwa } from '@vite-pwa/vitepress'
 
-// import { zh } from './zh.mts';
-
 // https://vitepress.dev/reference/site-config
 export default withPwa(defineConfig({
   title: "Kona Blog",
   description: "Learning knows no bounds",
   srcDir: 'src',
   ignoreDeadLinks: true,
+  head: [
+    ['link', { href: '/favicon.ico', rel: 'icon', type: 'image/svg+xml' }]
+  ],
   locales: {
     root: {
       label: '简体中文',
@@ -61,7 +62,6 @@ export default withPwa(defineConfig({
             ]
         }
     ],
-
     sidebar: [
       {
         collapsed: false,
@@ -78,7 +78,6 @@ export default withPwa(defineConfig({
         ]
       }
     ],
-
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ],
