@@ -53,7 +53,7 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-
+   
    lconst a = 2
    foo() // 2
    ```
@@ -66,7 +66,7 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-
+   
    lconst obj = {
      a: 2,
      foo: foo
@@ -90,12 +90,12 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-
+   
    lconst obj2 = {
      a: 42,
      foo: foo
    }
-
+   
    leconst obj1 = {
      a: 2,
      obj2: obj2
@@ -109,12 +109,12 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-
+   
    lconst obj = {
      a: 2,
      foo: foo
    }
-
+   
    leconst bar = obj.foo
    letconst a = 'oops, global'bar() // 'oops, global'
    ```
@@ -147,11 +147,11 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-
+   
    lconst obj = {
      a: 2
    }
-
+   
    foo.call(obj)
    ```
 
@@ -182,26 +182,101 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-
-   lconst obj = {
+   
+    const obj = {
      a: 2
    }
-
-   vletbar = function () {
+   
+   const bar = function () {
      foo.call(obj))
    }
-
+   
    bar() // 2
-   setTimeout(bar, 100)) // 2
+   setTimeout(bar, 100) // 2
    // 硬绑定的 bar 不可能再修改它的 this
-   barcall(window))// 2
+   bar.call(window)// 2
    ```
 
-   们创建了函数 `bar()`，并在它的内部手动调用 了 `foo.call(obj)`，因此强制把` foo` 的 `this` 绑定到了` obj`。无论之后如何调用函数 `bar`，它 总会手动在 `obj` 上调用 `foo`。这种绑定是一种显式的强制绑定，因此我们称之为`硬绑定`
+   创建了函数 `bar()`，并在它的内部手动调用 了 `foo.call(obj)`，因此强制把` foo` 的 `this` 绑定到了` obj`。无论之后如何调用函数 `bar`，它 总会手动在 `obj` 上调用 `foo`。这种绑定是一种显式的强制绑定，因此我们称之为`硬绑定`
 
 4. **new绑定**
 
+   在面向对象的语言中，`new`操作符通常用于实例化类，而`js`中`new`操作的调用的可能就是一个普通函数，使用`new`调用函数，会自动执行以下操作
+
+   1. 创建一个全新的对象
+   2. 对象的`__proto__`连接到构造函数的原型对象上
+   3. 新对象绑定到函数调用的`this`
+   4. 如果函数没有返回其他对象，那么返回这个新创建的对象
+
+   ```javascript
+   function creteNew(constructor. ...args) {
+       const instance = Object.create(constructor.prototype)
+       const result = constructor.apply(instance,args)
+       return typeof result === 'object' && result !== null ? result : instance
+   }
+   ```
+
+   
+
 #### 2.3 优先级
+
+首先`默认规则`是其他几个不匹配是才会考虑，所以优先级最低。
+
+1. 比较`隐式绑定`和`显式绑定`的优先级
+
+   ```javascript
+   function foo() {
+       console.log(this.a)
+   }
+   
+   var obj1 = {
+       a: 2,
+       foo: foo
+   }
+   
+   var obj2 = {
+       a: 3,
+       foo: foo
+   }
+   
+   obj1.foo() // 2
+   obj2.foo() // 3
+   
+   obj1.foo.call(obj2) // 3 this指向obj2 非obj1
+   obj2.foo.call(obj1) // 2 this指向obj1 非obj2
+   ```
+
+   可以看出`显示绑定`的优先级高于`隐式绑定`
+
+2. 比较`new绑定`和`隐式绑定`的优先级
+
+   ```javascript
+   function foo(something) {
+       this.a = something
+   }
+   
+   var obj1 = {
+       foo: foo
+   }
+   
+   var obj2 = {}
+   
+   obj1.foo(2)
+   console.log(obj1.a) // 2
+   
+   obj1.foo.call(obj2, 3)
+   console.log(obj2.a) // 3
+   
+   var bar = new obj1.foo(4) // 因为这里this绑定到bar 而非obj1上
+   console.log(obj1.a) // 2
+   console.log(bar.a) // 4
+   ```
+
+   `new`绑定的优先级高于`隐式绑定`
+
+3. 比较`显示绑定`和`new 绑定`优先级
+
+
 
 #### 2.4 绑定例外
 

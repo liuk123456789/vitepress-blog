@@ -8,9 +8,6 @@ import { withPwa } from '@vite-pwa/vitepress';
 export default withPwa(defineConfig({
   title: "Kona Blog",
   description: "Learning knows no bounds",
-  head: {
-    [link, {rel: 'icon',href: ''}]
-    },
   srcDir: 'src',
   ignoreDeadLinks: true,
   head: [
