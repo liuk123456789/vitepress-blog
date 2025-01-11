@@ -15,7 +15,6 @@ export const zh = defineConfig({
         'https://github.com/liuk123456789/vitepress-blog/blob/master/docs/src/:path',
       text: '在 GitHub 上编辑此页面',
     },
-    nav: nav(),
     outline: {
       label: '页面导航',
     },
@@ -175,101 +174,6 @@ function sidebarComponents(): DefaultTheme.SidebarItem[] {
         },
       ],
     },
-  ];
-}
-
-function nav(): DefaultTheme.NavItem[] {
-  return [
-    {
-      activeMatch: '^/(javascript|components)/',
-      text: 'Javascript基础',
-      items: [
-        {
-          activeMatch: '^/javascript/',
-          link: '/guide/introduction/vben',
-          text: '指南',
-        },
-        {
-          activeMatch: '^/components/',
-          link: '/components/introduction',
-          text: '组件',
-        },
-        {
-          text: '历史版本',
-          items: [
-            {
-              link: 'https://doc.vvbin.cn',
-              text: '2.x版本文档',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      text: '演示',
-      items: [
-        {
-          text: 'Vben Admin',
-          items: [
-            {
-              link: 'https://www.vben.pro',
-              text: '演示版本',
-            },
-            {
-              link: 'https://ant.vben.pro',
-              text: 'Ant Design Vue 版本',
-            },
-            {
-              link: 'https://naive.vben.pro',
-              text: 'Naive 版本',
-            },
-            {
-              link: 'https://ele.vben.pro',
-              text: 'Element Plus版本',
-            },
-          ],
-        },
-        {
-          text: '其他',
-          items: [
-            {
-              link: 'https://vben.vvbin.cn',
-              text: 'Vben Admin 2.x',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      link: '/commercial/technical-support',
-      text: '🦄 技术支持',
-    },
-    {
-      link: '/sponsor/personal',
-      text: '✨ 赞助',
-    },
-    {
-      link: '/commercial/community',
-      text: '👨‍👦‍👦 交流群',
-      // items: [
-      //   {
-      //     link: 'https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=22ySzj7pKiw&businessType=9&from=246610&biz=ka&mainSourceId=share&subSourceId=others&jumpsource=shorturl#/pc',
-      //     text: 'QQ频道',
-      //   },
-      //   {
-      //     link: 'https://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=mjZmlhgVzzUxvdxllB6C1vHpX8O8QRL0&authKey=DBdFbBwERmfaKY95JvRWqLCJIRGJAmKyZbrpzZ41EKDMZ5SR6MfbjOBaaNRN73fr&noverify=0&group_code=4286109',
-      //     text: 'QQ群',
-      //   },
-      //   {
-      //     link: 'https://discord.gg/VU62jTecad',
-      //     text: 'Discord',
-      //   },
-      // ],
-    },
-    // {
-    //   link: '/friend-links/',
-    //   text: '🤝 友情链接',
-    // },
   ];
 }
 

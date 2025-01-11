@@ -6,6 +6,8 @@
     "baseUrl": ".",
     "rootDir": ".",
     "module": "esnext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
@@ -16,12 +18,12 @@
     "skipLibCheck": true
   },
   "include": [
-    ".vitepress/*.mts",
-    ".vitepress/**/*.ts",
-    ".vitepress/**/*.vue",
-    "src/*.mts",
-    "src/**/*.ts",
-    "src/**/*.vue"
+    "./docs/.vitepress/*.mts",
+    "./docs.vitepress/**/*.ts",
+    "./docs.vitepress/**/*.vue",
+    "./docssrc/*.mts",
+    "./docssrc/**/*.ts",
+    "./docs/src/**/*.vue"
   ],
   "exclude": ["node_modules"]
 }
