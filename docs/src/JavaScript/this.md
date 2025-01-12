@@ -53,8 +53,8 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-   
-   lconst a = 2
+
+   const a = 2
    foo() // 2
    ```
 
@@ -66,10 +66,10 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-   
-   lconst obj = {
+
+   const obj = {
      a: 2,
-     foo: foo
+     foo
    }
    obj.foo()
    ```
@@ -90,15 +90,15 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-   
-   lconst obj2 = {
+
+   const obj2 = {
      a: 42,
-     foo: foo
+     foo
    }
-   
-   leconst obj1 = {
+
+   const obj1 = {
      a: 2,
-     obj2: obj2
+     obj2
    }
    obj1.obj2.foo() // 42 因为obj2是最后调用foo的
    ```
@@ -109,14 +109,15 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-   
-   lconst obj = {
+
+   const obj = {
      a: 2,
-     foo: foo
+     foo
    }
-   
-   leconst bar = obj.foo
-   letconst a = 'oops, global'bar() // 'oops, global'
+
+   const bar = obj.foo
+   const a = 'oops, global'
+   bar() // 'oops, global'
    ```
 
    虽然`bar`是`obj.foo`的一个引用，但是实际上，它引用的是 `foo` 函数本身，因此此时的` bar()` 其实是一个不带任何修饰的函数调用，因此应用了`默认绑定`
@@ -147,11 +148,11 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-   
-   lconst obj = {
+
+   const obj = {
      a: 2
    }
-   
+
    foo.call(obj)
    ```
 
@@ -182,15 +183,15 @@ baz() // <-- baz的调用位置
    function foo() {
      console.log(this.a)
    }
-   
-    const obj = {
+
+   const obj = {
      a: 2
    }
-   
+
    const bar = function () {
-     foo.call(obj))
+     foo.call(obj)
    }
-   
+
    bar() // 2
    setTimeout(bar, 100) // 2
    // 硬绑定的 bar 不可能再修改它的 this
@@ -209,14 +210,13 @@ baz() // <-- baz的调用位置
    4. 如果函数没有返回其他对象，那么返回这个新创建的对象
 
    ```javascript
-   function creteNew(constructor. ...args) {
-       const instance = Object.create(constructor.prototype)
-       const result = constructor.apply(instance,args)
-       return typeof result === 'object' && result !== null ? result : instance
+   function creteNew(constructor, ...args) {
+     // instance.__proto === constructor.prototype
+     const instance = Object.create(constructor.prototype)
+     const result = constructor.apply(instance, args)
+     return typeof result === 'object' && result !== null ? result : instance
    }
    ```
-
-   
 
 #### 2.3 优先级
 
@@ -226,22 +226,22 @@ baz() // <-- baz的调用位置
 
    ```javascript
    function foo() {
-       console.log(this.a)
+     console.log(this.a)
    }
-   
-   var obj1 = {
-       a: 2,
-       foo: foo
+
+   const obj1 = {
+     a: 2,
+     foo
    }
-   
-   var obj2 = {
-       a: 3,
-       foo: foo
+
+   const obj2 = {
+     a: 3,
+     foo
    }
-   
+
    obj1.foo() // 2
    obj2.foo() // 3
-   
+
    obj1.foo.call(obj2) // 3 this指向obj2 非obj1
    obj2.foo.call(obj1) // 2 this指向obj1 非obj2
    ```
@@ -252,22 +252,22 @@ baz() // <-- baz的调用位置
 
    ```javascript
    function foo(something) {
-       this.a = something
+     this.a = something
    }
-   
-   var obj1 = {
-       foo: foo
+
+   const obj1 = {
+     foo
    }
-   
-   var obj2 = {}
-   
+
+   const obj2 = {}
+
    obj1.foo(2)
    console.log(obj1.a) // 2
-   
+
    obj1.foo.call(obj2, 3)
    console.log(obj2.a) // 3
-   
-   var bar = new obj1.foo(4) // 因为这里this绑定到bar 而非obj1上
+
+   const bar = new obj1.foo(4) // 因为这里this绑定到bar 而非obj1上
    console.log(obj1.a) // 2
    console.log(bar.a) // 4
    ```
@@ -276,8 +276,289 @@ baz() // <-- baz的调用位置
 
 3. 比较`显示绑定`和`new 绑定`优先级
 
+   ```javascript
+   function foo(something) {
+     this.a = something
+   }
 
+   const obj1 = {}
+
+   const bar = foo.bind(obj1)
+   bar(2)
+   console.log(obj1.a) // 2 bar 被硬绑定obj1上
+
+   const baz = new bar(3)
+   console.log(obj1.a) // 2
+   console.log(baz.a) // 3 修改了this的绑定
+   ```
+
+   `new绑定`的优先级高于`硬绑定`
+
+   :::info 额外说下`call`、`apply`、`bind`的实现
+
+   :::
+
+   `call`的模拟实现
+
+   ```javascript
+   Function.prototype.myCall = function (context) {
+     if (typeof this !== 'function') {
+       throw new TypeError('Error') // 如果不是函数则抛出错误
+     }
+
+     thisArg = thisArg || window // 如果没有提供 thisArg，默认为全局对象
+
+     thisArg.fn = this // 将当前函数赋值给接收者对象的fn属性
+     const result = thisArg.fn(...args) // 调用函数并传入参数
+     delete thisArg.fn // 调用后删除fn属性
+     return result // 返回函数执行结果
+   }
+```
+
+   `apply`的模拟实现
+
+   ```javascript
+   Function.prototype.myApply = function (context, args) {
+     if (context === null) {
+       context = globalThis // 在浏览器中是 window, 在 Node.js 中是 global
+     }
+    else {
+       context = new Object(context) // 装箱 确保 context 是一个对象
+     }
+
+     // 设置 this 值
+     context._applyFunc = this
+
+     let result
+     if (args) {
+       result = context._applyFunc(...arg)
+     }
+     else {
+       // 如果没有提供参数数组，则直接调用函数
+       result = context._applyFunc()
+     }
+
+     // 删除临时添加的属性，避免污染 context 对象
+     delete context._applyFunc
+
+     return result
+   }
+   ```
+
+   `bind`的实现
+
+   ```javascript
+   Function.prototype.myBind = function (context) {
+     if (typeof this !== 'function') {
+       throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable')
+     }
+     // this -> myBind绑定的函数
+     const self = this
+     const args = Array.prototype.slice.call(arguments, 1)
+     // 定义空函数 防止原函数的原型对象被更改
+     const fNOP = function () {}
+
+     const fbound = function () {
+       // this.__proto__ === self.prototype
+       return self.apply(this instanceof self ? this : context, args.concat(Array.prototype.slice.call(arguments)))
+     }
+
+     fNOP.prototype = this.prototype
+     // fbound.prototype.__proto__ === fNOP.prototype === this.prototype
+     fbound.prototype = new fNOP()
+     // new fbound() 实例继承了原函数原型对象的属性&方法
+     return fbound
+   }
+   ```
 
 #### 2.4 绑定例外
 
-#### 2.5 this词法
+##### 2.4.1 被忽略的this
+
+```javascript
+function foo() {
+  console.log(this.a, this.b)
+}
+foo.apply(null, [2, 3]) // 2, 3
+
+const bar = foo.bind(null, 2)
+bar(3) // 2,3
+```
+
+##### 	2.4.2 间接引用
+
+```javascript
+function foo() {
+  console.log(this.a)
+}
+const a = 2
+const o = { a: 3, foo }
+const p = { a: 4 }
+
+o.foo() // 3
+// 赋值是对目标函数的引用， 因此调用位置是foo()
+(p.foo = o.foo)() // 2
+```
+
+##### 	2.4.3 软绑定
+
+软绑定是`bind`的一个变种，如果把原函数的`this`绑定到`window`或者全局对象，那就默认指向obj，否则不修改`this`，代码如下
+
+```javascript
+Function.prototype.sofeBind = function (obj) {
+  const fn = this
+  const curried = [].slice.call(arguments, 1)
+  const bound = function () {
+    return fn.apply((!this || this === (window || globa) ? obj : this), curried.concat.apply(curried, arguments))
+  }
+  bound.prototype = Object.create(fn.prototype)
+  return bound
+}
+```
+
+#### 2.5 this词法 箭头函数
+
+`箭头函数`不适用`this`的四种标准规则，而是根据外层（函数/全局）的作用决定`this`
+
+```javascript
+function foo() {
+  return (a) => {
+    console.log(this.a)
+  }
+}
+const obj1 = {
+  a: 2
+}
+
+const obj2 = {
+  a: 3
+}
+
+const bar = foo.call(obj1)
+
+bar.call(obj2) // 2
+```
+
+#### 2.6 this规则场景题
+
+1. 默认绑定
+
+   ```JavaScript
+   var a = 1
+   function foo () {
+     var a = 2
+     console.log(this.a) // 1 this -> window
+   }
+   foo()
+   ```
+
+2. 隐式绑定
+
+   ```javascript
+   function foo() {
+     console.log(this.a)
+   }
+   const obj = { a: 1, foo }
+   const a = 2
+   obj.foo() // 1
+   ```
+
+   隐式丢失
+
+   ```javascript
+   function foo() {
+     console.log(this.a)
+   }
+   function doFoo(fn) {
+     console.log(this)
+     fn()
+   }
+   const obj = { a: 1, foo }
+   const a = 2
+   const obj2 = { a: 3, doFoo }
+
+   // 函数作为参数传递时会被隐式赋值，回调函数丢失this绑定
+   obj2.doFoo(obj.foo)
+   ```
+
+3. 显示绑定
+
+   ```javascript
+   const obj1 = {
+     a: 1
+   }
+   const obj2 = {
+     a: 2,
+     foo1() {
+       console.log(this.a)
+     },
+     foo2() {
+       // 函数作为参数传递 隐式丢失 this -> window
+       setTimeout(function () {
+         console.log(this)
+         console.log(this.a)
+       }, 0)
+     }
+   }
+   const a = 3
+
+   obj2.foo1() // 2
+   obj2.foo2() // 3
+   ```
+
+   ```javascript
+   function foo1() {
+     console.log(this.a)
+   }
+   const a = 1
+   const obj = {
+     a: 2
+   }
+
+   const foo2 = function () {
+     foo1.call(obj)
+   }
+
+   foo2()
+   foo2.call(window) // this -> foo1
+   ```
+
+4. new绑定
+
+   ```javascript
+   const name = 'window'
+   function Person(name) {
+     this.name = name
+     this.foo = function () {
+       console.log(this.name)
+       return function () {
+         console.log(this.name)
+       }
+     }
+   }
+   const person1 = new Person('person1')
+   const person2 = new Person('person2')
+
+   person1.foo.call(person2)() // person2 window
+   person1.foo().call(person2) // person1 person2
+   ```
+
+5. 箭头函数
+
+   ```javascript
+   const obj = {
+     name: 'obj',
+     foo1: () => {
+       console.log(this.name)
+     },
+     foo2() {
+       console.log(this.name)
+       return () => {
+         console.log(this.name)
+       }
+     }
+   }
+   const name = 'window'
+   obj.foo1() // 箭头函数this由外层作用域决定 this -> window
+   obj.foo2()() // 箭头函数外层作用域是foo2 foo2 this-> obj
+   ```

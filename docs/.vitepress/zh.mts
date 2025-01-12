@@ -1,6 +1,6 @@
-import type { DefaultTheme } from 'vitepress';
+import type { DefaultTheme } from 'vitepress'
 
-import { defineConfig } from 'vitepress';
+import { defineConfig } from 'vitepress'
 
 export const zh = defineConfig({
   description: 'Kona Blog',
@@ -26,7 +26,7 @@ export const zh = defineConfig({
     },
     sidebarMenuLabel: '菜单',
   },
-});
+})
 
 function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [
@@ -99,7 +99,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
         { link: 'other/faq', text: '常见问题' },
       ],
     },
-  ];
+  ]
 }
 
 function sidebarCommercial(): DefaultTheme.SidebarItem[] {
@@ -116,7 +116,7 @@ function sidebarCommercial(): DefaultTheme.SidebarItem[] {
       link: 'customized',
       text: '定制开发',
     },
-  ];
+  ]
 }
 
 function sidebarComponents(): DefaultTheme.SidebarItem[] {
@@ -174,7 +174,7 @@ function sidebarComponents(): DefaultTheme.SidebarItem[] {
         },
       ],
     },
-  ];
+  ]
 }
 
 export const search: DefaultTheme.AlgoliaSearchOptions['locales'] = {
@@ -219,4 +219,4 @@ export const search: DefaultTheme.AlgoliaSearchOptions['locales'] = {
       },
     },
   },
-};
+}

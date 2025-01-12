@@ -67,7 +67,6 @@ o1.constructor === Foo // true
 
 Foo.prototype.propA = {}
 o1.propA
-
 o1.propA === o1.__proto__.propA // true
 o1.__proto__.propA === Foo.prototype.propA // true
 ```
@@ -78,7 +77,7 @@ o1.__proto__.propA === Foo.prototype.propA // true
 
 ```javascript
 function Foo() {}
-const o1 = new Foo()
+const o1 = new Foo()
 ```
 
 #### （一）、实例化关系
@@ -186,8 +185,6 @@ Object.__proto__ === Function.prototype // true
 针对第2点，它最终指向`null`
 
 ![proto_seven](/proto_seven.png)
-
-
 
 ### 三、总结
 
