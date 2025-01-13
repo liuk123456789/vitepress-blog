@@ -1,6 +1,9 @@
 import { withPwa } from '@vite-pwa/vitepress'
 
+import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vitepress'
+
+import UnoCssConfig from '../unocss.config'
 
 import { search as zhSearch } from './zh.mjs'
 
@@ -18,6 +21,11 @@ export default withPwa(defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
     },
+  },
+  vite: {
+    plugins: [
+      UnoCSS(UnoCssConfig),
+    ],
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -80,6 +88,9 @@ export default withPwa(defineConfig({
         items: [{
           link: '/DesignPartten/singleton',
           text: '单例模式',
+        }, {
+          link: '/DesignPartten/strategy',
+          text: '策略模式',
         }],
       },
     ],

@@ -1,8 +1,11 @@
 import type { Theme } from 'vitepress'
+import { defineConfig } from 'unocss'
 import DefaultTheme from 'vitepress/theme'
 // https://vitepress.dev/guide/custom-theme
 import { h } from 'vue'
+
 import './style.css'
+import 'virtual:uno.css'
 
 export default {
   extends: DefaultTheme,
