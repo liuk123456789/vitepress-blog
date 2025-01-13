@@ -6,8 +6,6 @@ outline: deep
 
 :::
 
-### 前言
-
 ### 1、什么是this
 
 :::info 当一个函数被调用时，会创建一个活动记录（也成为`执行上下文`）。这个记录包含了函数在哪里被调用（`调用栈`）、函数的调用方法、传入的参数等信息。`this`就是记录的其中一个属性，会在函数执行过程中使用到
@@ -280,13 +278,13 @@ baz() // <-- baz的调用位置
    function foo(something) {
      this.a = something
    }
-
+   
    const obj1 = {}
-
+   
    const bar = foo.bind(obj1)
    bar(2)
    console.log(obj1.a) // 2 bar 被硬绑定obj1上
-
+   
    const baz = new bar(3)
    console.log(obj1.a) // 2
    console.log(baz.a) // 3 修改了this的绑定
@@ -305,9 +303,9 @@ baz() // <-- baz的调用位置
      if (typeof this !== 'function') {
        throw new TypeError('Error') // 如果不是函数则抛出错误
      }
-
+   
      thisArg = thisArg || window // 如果没有提供 thisArg，默认为全局对象
-
+   
      thisArg.fn = this // 将当前函数赋值给接收者对象的fn属性
      const result = thisArg.fn(...args) // 调用函数并传入参数
      delete thisArg.fn // 调用后删除fn属性
@@ -343,7 +341,7 @@ baz() // <-- baz的调用位置
 
      return result
    }
-   ```
+```
 
    `bind`的实现
 
@@ -439,7 +437,7 @@ const bar = foo.call(obj1)
 bar.call(obj2) // 2
 ```
 
-#### 2.6 this规则场景题
+### 3、this规则场景题
 
 1. 默认绑定
 

@@ -66,16 +66,21 @@ export default withPwa(defineConfig({
       {
         collapsed: false,
         text: 'JavaScript基础',
-        items: [
-          {
-            link: '/JavaScript/proto',
-            text: '原型链',
-          },
-          {
-            link: '/JavaScript/this',
-            text: 'this相关',
-          },
-        ],
+        items: [{
+          link: '/JavaScript/proto',
+          text: '原型链',
+        }, {
+          link: '/JavaScript/this',
+          text: 'this相关',
+        }],
+      },
+      {
+        collapsed: true,
+        text: '设计模式',
+        items: [{
+          link: '/DesignPartten/singleton',
+          text: '单例模式',
+        }],
       },
     ],
     socialLinks: [

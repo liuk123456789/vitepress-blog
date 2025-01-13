@@ -4,7 +4,7 @@ layout: home
 sidebar: false
 
 hero:
-  name:"前端之路"
+  name: "前端之路"
   text: "不会容易，会不容易"
   tagline: 多听、多看、多想
   image:
