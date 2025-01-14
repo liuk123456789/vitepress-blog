@@ -94,16 +94,16 @@ function onSubmit() {
   <div class="pt-6 pb-6 pl-6 pr-6 shadow shadow-coolGray">
     <form ref="registerFormRef" @submit.prevent>
       <div class="flex">
-        <label class="color-zinc-400 font-size-13px w-120px">请输入用户名：</label>
+        <label class="color-zinc-400 font-size-13px w-32">请输入用户名：</label>
         <input class="border b-rounded border-solid pl-2 pr-2 border-zinc-300" type="text" name="userName">
         <span>{{ }}</span>
       </div>
       <div class="flex mt-4">
-        <label class="color-zinc-400 font-size-13px w-120px">请输入密码：</label>
+        <label class="color-zinc-400 font-size-13px w-32">请输入密码：</label>
         <input class="border b-rounded border-solid pl-2 pr-2 border-zinc-300" type="text" name="password">
       </div>
       <div class="flex mt-4">
-        <label class="color-zinc-400 font-size-13px w-120px">请输入手机号码：</label>
+        <label class="color-zinc-400 font-size-13px w-32">请输入手机号码：</label>
         <input class="border b-rounded border-solid pl-2 pr-2 border-zinc-300" type="text" name="mobile">
       </div>
       <span v-if="errorMsg" class="block font-size-13px color-red-5">{{ errorMsg }}</span>

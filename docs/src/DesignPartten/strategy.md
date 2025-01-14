@@ -5,6 +5,10 @@ outline: deep
 <script setup>
 import ValidateDemo from '../components/ValidateDemo.vue'
 </script>
+:::warning 参考：《JavaScript设计模式与开发实践》
+
+:::
+
 
 ### 概念说明
 
@@ -210,7 +214,7 @@ import ValidateDemo from '../components/ValidateDemo.vue'
 
           for(let i = 0, rule; rule = rules[i++]) {
               (
-              	function(rule) {
+             function(rule) {
                       const strategyAry = rule.strategy.split( ':' );
                       const errorMsg = rule.errorMsg;
 
@@ -258,7 +262,7 @@ import ValidateDemo from '../components/ValidateDemo.vue'
               errorMsg: '手机号码格式不正确'
           }]);
 
-      	return validator.start()
+        return validator.start()
       }
 
       registerForm.onsubmit = function() {
@@ -270,74 +274,261 @@ import ValidateDemo from '../components/ValidateDemo.vue'
       }
       ```
     <ValidateDemo></ValidateDemo>
-   
-   ### 实际开发应用
-   
+
+   ### 实际开发
+
    1. 完成`ElementUI`表单验证
-   
+
       **定义策略Strategies**
-   
+
       ```javascript
       // 限制规则 如：长度不能超过12
-      const limitRule = (value, options) => {
-         const {errMsg, length} = options 
-         if(value.length > length) return errMsg
+      function limitRule(value, options) {
+        const { errMsg, minLen = 0, maxLen = 0 } = options
+        if (!maxLen)
+      return
+        if (value.length > maxLen || value.length < minLen)
+      return errMsg
       }
-      
+
+      // 临界规则
+      function thresholdRule value, options) {
+         onst {m in,m ax}  = options
+         f( min && value < min) r
+      eturn `不能小于${min}`
+         f( max && value > max) r
+      eturn `不能大于${max}`
+      }
+
       // 正则规则 如：只能是中文/汉字
-      const regRule = (value, options) => {
-          const {errMsg, reg} = options
-          if(!reg.test(value)) return errMsg
-      }
-      
-      // 联动校验 如：证件类型 选择身份证 校验证件号
-      const relateRule = (value, options) => {
-          const {errMsg, } = options
-      }
-      
-      const strategies = {
-          limitRule,
-          regRule,
-          relateRule
+      function regRule (alue, options) {
+          nst {er rMsg, reg}  = options
+          (! reg.test(value)) re
+      turn errMsg
       }
       ```
-   
-      **`Validator`（可以看成`Context`）**
-   
+
+      **生成自定义校验函数**
+
       ```javascript
-      class Validator {
+      export function formValidateGene(keys, options) {
+        return (rule, value, cb) => {
+          const validateFn = (key, value, options) => {
+            if (Validates[key](value)) {
+              cb()
+            }
+            else {
+              cb(new Error(options.errMsg))
+            }
+          }
+          if (isArray(keys)) {
+            for (const { ruleName, options } of keys) {
+              validateFn(ruleName, value, options)
+            }
+          }
+          else {
+            validateFn(keys, value, options)
+          }
+        }
+      }
+      ```
+
+      **使用**
+
+      ```vue
+      <script>
+      import formValidateGene from '@/utils/validator'
+
+      export default {
+        data() {
+          return {
+            rules: {
+              username: [{
+                validator: formValidateGene([{
+                  ruleName: 'regRule',
+                  options: {
+                    errorMsg: '只能是中文/汉字',
+                    regExp: new RegExp('^[\u4E00-\u9FA5]+$')
+                  }
+                }, {
+                  ruleName: 'limitRule',
+                  options: {
+                    errorMsg: `长度不能超过10`,
+                    minLen: 2,
+                    maxLen: 10
+                  }
+                }])
+              }],
+              password: [{
+                validator: formValidateGene('thresholdRule', {
+                  min: 6,
+                  max: 14
+                })
+              }]
+            }
+          }
+        }
+      }
+      </script>
+      ```
+
+   2. 时间显示
+
+      :::info 规则如下：
+
+      ​	小于-24小时，直接显示日期（`YYYY-MM-DD HH:mm`）
+
+      ​	小于0，大于-24小时，显示昨天
+
+      ​	大于0，小于1分钟，显示刚刚
+
+      ​	大于1分钟，小于1小时， 显示多少分钟前
+
+      ​	大于1小时，小于24小时，显示多少小时前
+
+      ​	大于24小时，直接显示日期（`YYYY-MM-DD HH:mm`）
+
+      :::
+
+      **定义一些常量**
+
+      ```javascript
+      // 一分钟
+      const ONE_MINUTE_STAMP = 60 * 1000
+      // 一小时
+      const ONE_HOUR_STAMP = 60 * 60 * 1000
+      // 一天
+      const ONE_DAY_STAMP = 24 * 60 * 60 * 1000
+      
+      export function dateFormat date, rule = 'YYYY-MM-DD HH:mm') {
+         f( isValidDate(date)) r
+      eturn
+         eturn dayjs(date).format(rule)
+      }
+      ```
+
+      **策略规则指定**
+
+      ```javascript
+      // 昨天
+      const yesterdayRule = stamp => stamp < 0 && stamp >= -ONE_DAY_STAMP
+      // 刚刚
+      const nowRule = stamp => stamp >= 0 && stamp <= ONE_MINUTE_STAMP
+      // 多少分钟前
+      const minuteRule = stamp => stamp > ONE_MINUTE_STAMP && stamp <= ONE_HOUR_STAMP
+      // 多少小时前
+      const hourRule = stamp => stamp > ONE_HOUR_STAMP && stamp <= ONE_DAY_STAMP
+      // 显示年月日
+      const dateRule = stamp => stamp < -ONE_DAY_STAMP && stamp > ONE_DAY_STAMP
+      
+      export default {
+        yesterdayRule,
+        nowRule,
+        minuteRule,
+        hourRule,
+        dateRule
+      }
+      ```
+
+      **校验类 支持增删改查**
+
+      ```javascript
+      class ValidateTime {
           constructor() {
-              this.cache = []
+              this.rules = []
           }
-          
-          clear() {
-              this.cache = []
-          }
-          
-          addRule(ruleName,...args) {
-              const value = args.shift()
-              this.cache.push(function() {
-                  return strategies[ruleName].apply(value, args)
+      
+          addRule(ruleName, options) {
+              this.rules.push({
+                  key: ruleName.
+                  rule: ruleStrategys[ruleName],
+                  label: (args) => options.labelFn(args)
               })
           }
-          
-          start() {
-              for(let i = 0; i < this.cache.length; i++) {
-                  const errMsg = this.cache[i]()
-                  if(errMsg) return errMsg
+      
+          deleteRule(ruleName) {
+              const idx = this.rules.findIndex(({key}) => key === ruleName)
+              if(idx === -1) return
+              this.rules.splice(idx, 1)
+          }
+      
+      	updateRule(ruleName,options) {
+             const idx = this.rules.findIndex(({key}) => key === ruleName)
+              if(idx === -1) return
+              this.rules.splice(idx, 1, {
+                  ...this.rules[idx],
+                  ...options
+              })
+          }
+      
+      	clearRule() {
+              this.rules = []
+          }
+      
+      	startValidte(diffStamp) {
+              let i = this.rules.length
+              while(i) {
+                  const ruleFn = this.rules[i].rule
+                  const labelFn = this.rules[].label
+                  if(ruleFn(diffStamp)) {
+                      return labelFn(diffStamp)
+                  }
+                  i--
               }
           }
       }
       ```
-   
-      **使用**
-   
-      ```javascript
+
+      **hooks统一处理**
+
+      ```typescript
+      <script>
+      	import Validator from '@/utils/validator'
+      	import dayjs from 'dayjs'
+      	import { ref } from 'vue'
       
+      	export function useTimeCalc(targetTime) {
+              const label = ref('')
+          	const validator = new Validator()
+          	const targetStamp = +dayjs(targetTime)
+          	const diffStamp = +dayjs() - targetStamp
+          	validator.addRule('yesterdayRule', {
+             		labelFn:() => '昨天'
+          	})
+      		validator.addRule('nowRule', {
+              	labelFn: () => '刚刚'
+          	})
+              validator.addRule('minuteRule', {
+                  labelFn: (diffStamp) => `${parseInt(diffStamp / ONE_MINUTE_STAMP)}分钟前`
+              })
+              validator.addRule('hourRule', {
+                  labelFn: (diffStamp) => `${parseInt(diffStamp / ONE_HOUR_STAMP)}小时前`
+              })
+              validator.addRule('dateRule', {
+                  labelFn: () => dayjs(targetTime)
+              })
+              label.value = validator.startValidte(diffStamp)
+              return {
+                  label
+              }
+          }
+      </script>
       ```
-   
+
+      **使用**
+
+      ```vue
+      <script lang="ts" setup>
+      import { useTimeCalc } from '@/hooks/useTimeCalc'
       
-   
+      const { label } = useTimeCalc('2025-1-14 11:32:20')
       
-   
-   2. 
+      return {
+        label
+      }
+      </script>
+      
+      <template>
+        <span>{{ label }}</span>
+      </template>
+      ```

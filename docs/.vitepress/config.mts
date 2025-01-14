@@ -69,6 +69,24 @@ export default withPwa(defineConfig({
           },
         ],
       },
+      {
+        text: 'TypeScript',
+        items: [
+          {
+            link: '/TypeScript/base',
+            text: '基础',
+          },
+        ],
+      },
+      {
+        text: '算法系列',
+        items: [
+          {
+            link: '/algorithm/binarySearch',
+            text: '二分算法',
+          },
+        ],
+      },
     ],
     sidebar: [
       {
@@ -83,7 +101,7 @@ export default withPwa(defineConfig({
         }],
       },
       {
-        collapsed: true,
+        collapsed: false,
         text: '设计模式',
         items: [{
           link: '/DesignPartten/singleton',
@@ -91,6 +109,9 @@ export default withPwa(defineConfig({
         }, {
           link: '/DesignPartten/strategy',
           text: '策略模式',
+        }, {
+          link: '/DesignPartten/state',
+          text: '状态模式',
         }],
       },
     ],

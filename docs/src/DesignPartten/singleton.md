@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-:::warning 本文主要来源《JavaScript设计模式与开发实践》
+:::warning 参考：《JavaScript设计模式与开发实践》
 
 :::
 
