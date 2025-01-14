@@ -8,7 +8,7 @@ import ValidateDemo from '../components/ValidateDemo.vue'
 
 ### 概念说明
 
-:::info 策略模式是一种简单却常用的设计模式，它的应用场景非常广泛。我们先了解策略模式的概念，在通过代码示例来更清晰的认识它。策略模式由两部分构成：一部分是封装不同策略的策略组，另一部分是 Context。通过组合和委托来让 Context 拥有执行策略的能力，从而实现可复用、可扩展和可维护，并且避免大量复制粘贴的工作。
+:::info 策略模式是一种简单却常用的设计模式，它的应用场景非常广泛。我们先了解策略模式的概念，在通过代码示例来更清晰的认识它。策略模式由两部分构成：一部分是封装不同策略的策略组，另一部分是 `Context`。通过组合和委托来让 `Context` 拥有执行策略的能力，从而实现可复用、可扩展和可维护，并且避免大量复制粘贴的工作。
 
 :::
 
@@ -272,3 +272,72 @@ import ValidateDemo from '../components/ValidateDemo.vue'
     <ValidateDemo></ValidateDemo>
    
    ### 实际开发应用
+   
+   1. 完成`ElementUI`表单验证
+   
+      **定义策略Strategies**
+   
+      ```javascript
+      // 限制规则 如：长度不能超过12
+      const limitRule = (value, options) => {
+         const {errMsg, length} = options 
+         if(value.length > length) return errMsg
+      }
+      
+      // 正则规则 如：只能是中文/汉字
+      const regRule = (value, options) => {
+          const {errMsg, reg} = options
+          if(!reg.test(value)) return errMsg
+      }
+      
+      // 联动校验 如：证件类型 选择身份证 校验证件号
+      const relateRule = (value, options) => {
+          const {errMsg, } = options
+      }
+      
+      const strategies = {
+          limitRule,
+          regRule,
+          relateRule
+      }
+      ```
+   
+      **`Validator`（可以看成`Context`）**
+   
+      ```javascript
+      class Validator {
+          constructor() {
+              this.cache = []
+          }
+          
+          clear() {
+              this.cache = []
+          }
+          
+          addRule(ruleName,...args) {
+              const value = args.shift()
+              this.cache.push(function() {
+                  return strategies[ruleName].apply(value, args)
+              })
+          }
+          
+          start() {
+              for(let i = 0; i < this.cache.length; i++) {
+                  const errMsg = this.cache[i]()
+                  if(errMsg) return errMsg
+              }
+          }
+      }
+      ```
+   
+      **使用**
+   
+      ```javascript
+      
+      ```
+   
+      
+   
+      
+   
+   2. 
