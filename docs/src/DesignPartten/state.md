@@ -36,8 +36,12 @@ class BaseState {
     constructor(name) {
         this.name = name
     }
-    nextState(state) {
-        throw new Error('Function next is not implement')
+    handleAction(instance) {
+        throw new Error('Function nextState is not implement')
+    }
+    
+    reset() {
+        this.stateInstance = null
     }
 }
 ```
@@ -50,8 +54,8 @@ class ScaningState extends BaseState {
     constructor() {
         super('扫描中')
     }
-    nextState(instance) {
-        instance.setState(new UploadingState())
+    handleAction() {
+        this.setState(new UploadingState())
     }
 }
 
@@ -60,8 +64,8 @@ class UploadingState extends BaseState {
     constructor() {
         super('上传中')
     }
-    nextState(instance) {
-        instance.setState(new DoneState())
+    handleAction() {
+        this.setState(new DoneState())
     }
 }
 
@@ -70,7 +74,7 @@ class DoneState extends BaseState {
     constructor() {
         super('上传完成')
     }
-    nextState() {
+    handleAction() {
         
     }
 }
@@ -80,7 +84,7 @@ class ErrorState extends BaseState {
     constructor() {
         super('上传失败')
     }
-    nextState() {
+    handleAction() {
         
     }
 }
@@ -90,10 +94,36 @@ class PauseState extends BaseState {
     constructor() {
         super('暂停上传')
     }
-    nextState() {
-        
+    handleAction() {
+        this.setState(new UploadingState())
     }
 }
 ```
+
+**上下文对象Context**
+
+```typescript
+class Context {
+    constructor() {
+        this.stateInstance = null
+    }
+    
+    setState(stateInstance) {
+        this.stateInstance = stateInstance
+    }
+    
+    handleAction() {
+        this.stateInstance.handleAction.apply(this.stateInstance)
+    }
+}
+```
+
+**使用**
+
+```typescript
+
+```
+
+
 
 ### 实发开发应用
