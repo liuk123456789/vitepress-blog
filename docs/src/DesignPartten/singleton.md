@@ -47,20 +47,20 @@ outline: deep
    const CreateDiv = (function () {
      let instance
 
-     const CreateDiv = function( html) {
-        f( instance) {
-          eturn instance
-
-        his.html = html
-        his.init()
-        nstance = this
+     const CreateDiv = function (html) {
+       if (instance) {
+         return instance
+       }
+       this.html = html
+       this.init()
+       instance = this
      }
 
-     CreateDiv.prototype.init = function()  {
-         nst div = document.createElement('div')
-         v.innerHtml = this.html
-         cument.body.appendChild(div)
-         turn CreateDiv
+     CreateDiv.prototype.init = function () {
+       const div = document.createElement('div')
+       div.innerHtml = this.html
+       document.body.appendChild(div)
+       return CreateDiv
      }
    })()
 

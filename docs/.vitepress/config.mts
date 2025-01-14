@@ -112,6 +112,9 @@ export default withPwa(defineConfig({
         }, {
           link: '/DesignPartten/state',
           text: '状态模式',
+        }, {
+          link: '/DesignPartten/publishSubscribe',
+          text: '发布订阅模式',
         }],
       },
     ],

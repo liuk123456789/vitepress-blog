@@ -33,70 +33,83 @@ outline: deep
 
 ```typescript
 class BaseState {
-    constructor(name) {
-        this.name = name
-    }
-    handleAction(instance) {
-        throw new Error('Function nextState is not implement')
-    }
-    
-    reset() {
-        this.stateInstance = null
-    }
+  constructor(name) {
+    this.name = name
+  }
+
+  handleAction(instance) {
+    throw new Error('Function handleAction is not implement')
+  }
 }
 ```
 
 **定义几种状态类**
 
 ```typescript
+// 等待上传
+class PendingState extends BaseState {
+  constructor() {
+    super('上传')
+  }
+
+  handleAction(context) {
+    context.setSate(new ScaningState())
+  }
+}
+
 // 扫描中
 class ScaningState extends BaseState {
-    constructor() {
-        super('扫描中')
-    }
-    handleAction() {
-        this.setState(new UploadingState())
-    }
+  constructor() {
+    super('扫描中')
+  }
+
+  handleAction(context) {
+    context.setState(new UploadingState())
+  }
 }
 
 // 上传中
 class UploadingState extends BaseState {
-    constructor() {
-        super('上传中')
-    }
-    handleAction() {
-        this.setState(new DoneState())
-    }
+  constructor() {
+    super('上传中')
+  }
+
+  handleAction(context) {
+    context.setState(new DoneState())
+  }
 }
 
-//上传完成
+// 上传完成
 class DoneState extends BaseState {
-    constructor() {
-        super('上传完成')
-    }
-    handleAction() {
-        
-    }
+  constructor() {
+    super('上传完成')
+  }
+
+  handleAction(context) {
+    context.setState()
+  }
 }
 
 // 上传失败
 class ErrorState extends BaseState {
-    constructor() {
-        super('上传失败')
-    }
-    handleAction() {
-        
-    }
+  constructor() {
+    super('上传失败')
+  }
+
+  handleAction(context) {
+    context.setState()
+  }
 }
 
 // 暂停上传
 class PauseState extends BaseState {
-    constructor() {
-        super('暂停上传')
-    }
-    handleAction() {
-        this.setState(new UploadingState())
-    }
+  constructor() {
+    super('暂停上传')
+  }
+
+  handleAction(context) {
+    context.setState(new UploadingState())
+  }
 }
 ```
 
@@ -104,26 +117,116 @@ class PauseState extends BaseState {
 
 ```typescript
 class Context {
-    constructor() {
-        this.stateInstance = null
-    }
-    
-    setState(stateInstance) {
-        this.stateInstance = stateInstance
-    }
-    
-    handleAction() {
-        this.stateInstance.handleAction.apply(this.stateInstance)
-    }
+  constructor() {
+    // 设置初始状态 这里默认待上传
+    this.stateInstance = new PendingState()
+  }
+
+  setState(stateInstance) {
+    this.stateInstance = stateInstance || new PendingState()
+  }
+
+  request() {
+    this.stateInstance.handleAction.apply(this)
+  }
 }
 ```
 
 **使用**
 
 ```typescript
-
+const context = new Context()
+// 点击上传 进入扫描中
+context.request()
+// 上传中
+context.request()
+// 点击暂停按钮触发中断上传
+context.setState(new PauseState())
+// 点击继续上传
+context.request()
+// 上传失败
+context.setState(new ErrorState())
+// 重新上传
+context.setState(new UploadingState())
+// 上传成功
+context.request()
 ```
 
+### 实际开发应用
 
+**订单状态**
 
-### 实发开发应用
+在实际应用场景中，订单可能存在以下几种状态
+
+1. 待支付
+2. 取消支付
+3. 已支付
+4. 待发货
+5. 发货中
+6. 已完成
+
+```typescript
+// 抽象状态类
+class OrderState {
+  next(order) {}
+}
+
+// 待支付
+class PendingPaymentState extends OrderState {
+  next(order) {
+    order.setState(new PaidState())
+  }
+}
+// 取消支付
+class CancelPaymentState extends OrderState {
+  next(order) {
+    console.log('用户已取消支付')
+  }
+}
+
+// 已支付
+class PaidState extends OrderState {
+  next(order) {
+    order.setState(new ShippingState())
+  }
+}
+
+// 发货中
+class ShippingState extends OrderState {
+  next(order) {
+    order.setState(new CompletedState())
+  }
+}
+
+// 已完成
+class CompletedState extends OrderState {
+  next(order) {
+    console.log('Order has been completed.')
+  }
+}
+
+// 上下文类
+class Order {
+  constructor() {
+    this.state = new PendingPaymentState()
+  }
+
+  setState(state) {
+    this.state = state
+  }
+
+  nextStep() {
+    this.state.next(this)
+  }
+}
+```
+
+**使用**
+
+```typescript
+const order = new Order()
+order.nextStep()
+order.nextStep()
+order.nextStep()
+```
+
