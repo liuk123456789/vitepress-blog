@@ -82,7 +82,7 @@ export default withPwa(defineConfig({
         text: '算法系列',
         items: [
           {
-            link: '/algorithm/binarySearch',
+            link: '/algorithm/binarySearch/description',
             text: '二分算法',
           },
         ],
@@ -115,6 +115,27 @@ export default withPwa(defineConfig({
         }, {
           link: '/DesignPartten/publishSubscribe',
           text: '发布订阅模式',
+        }, {
+          link: '/DesignPartten/proxy',
+          text: '代理模式',
+        }, {
+          link: '/DesignPartten/mediator',
+          text: '中介者模式',
+        }],
+      },
+      {
+        collapsed: false,
+        text: '算法系列',
+        items: [{
+          link: '/algorithm/base',
+          text: '简介',
+        }, {
+          text: '二分算法',
+          collapsed: true,
+          items: [{
+            link: '/algorithm/binarySearch/description',
+            text: '算法说明',
+          }],
         }],
       },
     ],
