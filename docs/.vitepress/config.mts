@@ -130,11 +130,14 @@ export default withPwa(defineConfig({
           link: '/algorithm/base',
           text: '简介',
         }, {
-          text: '二分算法',
+          text: '二分查找',
           collapsed: true,
           items: [{
             link: '/algorithm/binarySearch/description',
             text: '算法说明',
+          }, {
+            link: '/algorithm/binarySearch/leetcode',
+            text: 'leetcode',
           }],
         }],
       },

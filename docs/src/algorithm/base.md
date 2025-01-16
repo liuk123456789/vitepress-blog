@@ -1,9 +1,9 @@
 ---
 outline: deep
 ---
-:::warning 本篇内容参考[Hello算法](https://www.hello-algo.com/chapter_introduction/what_is_dsa/)
+:::warning 本篇内容来自[Hello算法](https://www.hello-algo.com/chapter_introduction/what_is_dsa/)
 
-算法：站在巨人的肩膀上
+`Hello 算法`写的真的很好，强烈推荐
 
 :::
 
