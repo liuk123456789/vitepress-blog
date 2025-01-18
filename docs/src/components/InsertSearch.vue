@@ -49,7 +49,7 @@ function onClick3(nums, target) {
     </div>
     <CustomButton class="mt-4" title="测试" @submit="onClick2([1, 3, 5, 6], 2)" />
     <div class="color-zinc mt-4">
-      示例2运行结果：{{ resModel.demo3 }}
+      示例3运行结果：{{ resModel.demo3 }}
     </div>
     <CustomButton class="mt-4" title="测试" @submit="onClick3([1, 3, 5, 6], 7)" />
   </Container>
