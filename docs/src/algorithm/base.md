@@ -61,9 +61,6 @@ outline: deep
 **系统通过内存地址来访问目标位置的数据**。如图 3-2 所示，计算机根据特定规则为表格中的每个单元格分配编号，确保每个内存空间都有唯一的内存地址。有了这些地址，程序便可以访问内存中的数据。
 
 [![内存条、内存空间、内存地址](https://www.hello-algo.com/chapter_data_structure/classification_of_data_structure.assets/computer_memory_location.png)](https://www.hello-algo.com/chapter_data_structure/classification_of_data_structure.assets/computer_memory_location.png)
-
-图 3-2  内存条、内存空间、内存地址
-
 :::tip
 
 值得说明的是，将内存比作 Excel 表格是一个简化的类比，实际内存的工作机制比较复杂，涉及地址空间、内存管理、缓存机制、虚拟内存和物理内存等概念。
@@ -75,8 +72,6 @@ outline: deep
 如图 3-3 所示，**物理结构反映了数据在计算机内存中的存储方式**，可分为连续空间存储（数组）和分散空间存储（链表）。物理结构从底层决定了数据的访问、更新、增删等操作方法，两种物理结构在时间效率和空间效率方面呈现出互补的特点。
 
 [![连续空间存储与分散空间存储](https://www.hello-algo.com/chapter_data_structure/classification_of_data_structure.assets/classification_phisical_structure.png)](https://www.hello-algo.com/chapter_data_structure/classification_of_data_structure.assets/classification_phisical_structure.png)
-
-图 3-3  连续空间存储与分散空间存储
 
 值得说明的是，**所有数据结构都是基于数组、链表或二者的组合实现的**。例如，栈和队列既可以使用数组实现，也可以使用链表实现；而哈希表的实现可能同时包含数组和链表。
 

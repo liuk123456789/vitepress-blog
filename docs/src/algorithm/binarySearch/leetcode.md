@@ -6,6 +6,8 @@ outline: deep
  import Search from '../../components/Search.vue'
  import InsertSearch from '../../components/InsertSearch.vue'
  import Sqrtx from '../../components/Sqrtx.vue'
+ import RotateSearch from '../../components/RotateSearch.vue'
+ import FirstAndLastSearch from '../../components/FirstAndLastSearch.vue'
 
 </script>
 
@@ -36,6 +38,8 @@ outline: deep
 >  二分结束 left指向最左边的target（index: 2, value: 5）, right指向首个小于target的元素（index: 1, value: 2）
 
 ### 简单题
+
+<br></br>
 
 #### 二分搜索
 
@@ -265,6 +269,177 @@ const solution = function (isBadVersion: any) {
 
 ****
 
-#### 中等题
+### 中等题
 
-#### 困难题
+<br></br>
+
+#### 搜索旋转排序数组
+
+:::info 整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
+
+在传递给函数之前，`nums` 在预先未知的某个下标 `k`（`0 <= k < nums.length`）上进行了 **旋转**，使数组变为 `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]`（下标 **从 0 开始** 计数）。例如， `[0,1,2,4,5,6,7]` 在下标 `3` 处经旋转后可能变为 `[4,5,6,7,0,1,2]` 。
+
+给你 **旋转后** 的数组 `nums` 和一个整数 `target` ，如果 `nums` 中存在这个目标值 `target` ，则返回它的下标，否则返回 `-1` 。
+
+你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
+
+**示例 1：**
+
+```
+输入：nums = [4,5,6,7,0,1,2], target = 0
+输出：4
+```
+
+**示例 2：**
+
+```
+输入：nums = [4,5,6,7,0,1,2], target = 3
+输出：-1
+```
+
+**示例 3：**
+
+```
+输入：nums = [1], target = 0
+输出：-1
+```
+
+:::
+
+**解题思路**
+
+![search.svgs](/search.svg)
+
+如上图所示，其实就是一个有序数组分为两个区间，区间N1和区间N2
+
+1. 首先，不管mid如何变动，[left, mid] || [mid, right] 一定有个是有序区间
+2. 如果在[left, mid]区间，如果target >= left && target < mid, 往左查找（right = mid - 1），否则的话， 往右查找（left = mid + 1)
+3. 那么右区间同理，如果target > mid&& target < right , 往右查找（left = mid + 1），否则的话， 往右查找（right= mid - 1)
+
+**解题**
+
+```typescript
+function search(nums: number[], target: number): number {
+  if (nums.length === 0)
+    return -1
+  let l = 0
+  let r = nums.length - 1
+  while (l <= r) {
+    const mid = l + ((r - l) >>> 1)
+    if (target === nums[mid])
+      return mid
+    // [left,mid]
+    if (nums[l] <= nums[mid]) {
+      if (target >= nums[l] && target < nums[mid]) {
+        r = mid - 1
+      }
+      else {
+        l = mid + 1
+      }
+    }
+    else { // [mid,right]区间
+      if (target > nums[mid] && target <= nums[r]) {
+        l = mid + 1
+      }
+      else {
+        r = mid - 1
+      }
+    }
+  }
+  return -1
+};
+```
+<RotateSearch></RotateSearch>
+<br></br>
+
+#### 在排序数组中查找元素的第一个和最后一个的位置
+
+:::info 给你一个按照非递减顺序排列的整数数组 `nums`，和一个目标值 `target`。请你找出给定目标值在数组中的开始位置和结束位置。
+
+如果数组中不存在目标值 `target`，返回 `[-1, -1]`。
+
+你必须设计并实现时间复杂度为 `O(log n)` 的算法解决此问题。
+
+**示例 1：**
+
+```
+输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]
+```
+
+**示例 2：**
+
+```
+输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]
+```
+
+**示例 3：**
+
+```
+输入：nums = [], target = 0
+输出：[-1,-1]
+```
+
+**提示：**
+
+- `0 <= nums.length <= 105`
+- `-109 <= nums[i] <= 109`
+- `nums` 是一个非递减数组
+- `-109 <= target <= 109`
+
+:::
+
+**解题**
+
+使用了两次二分搜索分别查找最左侧的target和最右侧的target
+
+```typescript
+function searchRange(nums: number[], target: number): number[] {
+  let left = 0
+  let right = nums.length - 1
+  let first = -1
+  let last = -1
+  while (left <= right) {
+    const mid = left + ((right - left) >>> 1)
+    if (nums[mid] === target) {
+      first = mid
+      // 寻找靠近左侧的target
+      right = mid - 1
+    }
+    else if (nums[mid] > target) {
+      right = mid - 1
+    }
+    else {
+      left = mid + 1
+    }
+  }
+
+  // 最后一个等于target的位置
+  left = 0
+  right = nums.length - 1
+  while (left <= right) {
+    const mid = left + ((right - left) >>> 1)
+    if (nums[mid] === target) {
+      last = mid
+      // 寻找靠近右侧的target
+      left = mid + 1
+    }
+    else if (nums[mid] > target) {
+      right = mid - 1
+    }
+    else {
+      left = mid + 1
+    }
+  }
+
+  return [first, last]
+};
+```
+<FirstAndLastSearch></FirstAndLastSearch>
+<br></br>
+### 困难题
+
+<br></br>
+
+待刷

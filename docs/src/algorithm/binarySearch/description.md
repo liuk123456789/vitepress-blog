@@ -32,29 +32,29 @@ outline: deep
 ```typescript
 /* 二分查找（双闭区间） */
 function binarySearch(nums: number[], target: number): number {
-    // 初始化双闭区间 [0, n-1] ，即 i, j 分别指向数组首元素、尾元素
-    let i = 0,
-        j = nums.length - 1;
-    // 循环，当搜索区间为空时跳出（当 i > j 时为空）
-    while (i <= j) {
-        // 计算中点索引 m
-        const m = Math.floor(i + (j - i) / 2);
-        if (nums[m] < target) {
-            // 此情况说明 target 在区间 [m+1, j] 中
-            i = m + 1;
-        } else if (nums[m] > target) {
-            // 此情况说明 target 在区间 [i, m-1] 中
-            j = m - 1;
-        } else {
-            // 找到目标元素，返回其索引
-            return m;
-        }
+  // 初始化双闭区间 [0, n-1] ，即 i, j 分别指向数组首元素、尾元素
+  let i = 0
+  let j = nums.length - 1
+  // 循环，当搜索区间为空时跳出（当 i > j 时为空）
+  while (i <= j) {
+    // 计算中点索引 m
+    const m = Math.floor(i + (j - i) / 2)
+    if (nums[m] < target) {
+      // 此情况说明 target 在区间 [m+1, j] 中
+      i = m + 1
     }
-    return -1; // 未找到目标元素，返回 -1
+    else if (nums[m] > target) {
+      // 此情况说明 target 在区间 [i, m-1] 中
+      j = m - 1
+    }
+    else {
+      // 找到目标元素，返回其索引
+      return m
+    }
+  }
+  return -1 // 未找到目标元素，返回 -1
 }
 ```
-
-
 
 **时间复杂度为 O(log⁡n)** ：在二分循环中，区间每轮缩小一半，因此循环次数为 log2⁡n 。
 
@@ -69,37 +69,35 @@ function binarySearch(nums: number[], target: number): number {
 ```typescript
 /* 二分查找（左闭右开区间） */
 function binarySearchLCRO(nums: number[], target: number): number {
-    // 初始化左闭右开区间 [0, n) ，即 i, j 分别指向数组首元素、尾元素+1
-    let i = 0,
-        j = nums.length;
-    // 循环，当搜索区间为空时跳出（当 i = j 时为空）
-    while (i < j) {
-        // 计算中点索引 m
-        const m = Math.floor(i + (j - i) / 2);
-        if (nums[m] < target) {
-            // 此情况说明 target 在区间 [m+1, j) 中
-            i = m + 1;
-        } else if (nums[m] > target) {
-            // 此情况说明 target 在区间 [i, m) 中
-            j = m;
-        } else {
-            // 找到目标元素，返回其索引
-            return m;
-        }
+  // 初始化左闭右开区间 [0, n) ，即 i, j 分别指向数组首元素、尾元素+1
+  let i = 0
+  let j = nums.length
+  // 循环，当搜索区间为空时跳出（当 i = j 时为空）
+  while (i < j) {
+    // 计算中点索引 m
+    const m = Math.floor(i + (j - i) / 2)
+    if (nums[m] < target) {
+      // 此情况说明 target 在区间 [m+1, j) 中
+      i = m + 1
     }
-    return -1; // 未找到目标元素，返回 -1
+    else if (nums[m] > target) {
+      // 此情况说明 target 在区间 [i, m) 中
+      j = m
+    }
+    else {
+      // 找到目标元素，返回其索引
+      return m
+    }
+  }
+  return -1 // 未找到目标元素，返回 -1
 }
 ```
 
-
-
-如图 10-3 所示，在两种区间表示下，二分查找算法的初始化、循环条件和缩小区间操作皆有所不同。
+如下图，在两种区间表示下，二分查找算法的初始化、循环条件和缩小区间操作皆有所不同。
 
 由于“双闭区间”表示中的左右边界都被定义为闭区间，因此通过指针 i 和指针 j 缩小区间的操作也是对称的。这样更不容易出错，**因此一般建议采用“双闭区间”的写法**。
 
 [![两种区间定义](https://www.hello-algo.com/chapter_searching/binary_search.assets/binary_search_ranges.png)](https://www.hello-algo.com/chapter_searching/binary_search.assets/binary_search_ranges.png)
-
-图 10-3  两种区间定义
 
 ### 优点与局限性
 

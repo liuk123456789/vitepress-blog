@@ -79,7 +79,7 @@ export default withPwa(defineConfig({
         ],
       },
       {
-        text: '算法系列',
+        text: '算法刷题录',
         items: [
           {
             link: '/algorithm/binarySearch/description',
@@ -125,7 +125,7 @@ export default withPwa(defineConfig({
       },
       {
         collapsed: false,
-        text: '算法系列',
+        text: '算法刷题录',
         items: [{
           link: '/algorithm/base',
           text: '简介',
@@ -139,6 +139,9 @@ export default withPwa(defineConfig({
             link: '/algorithm/binarySearch/leetcode',
             text: 'leetcode',
           }],
+        }, {
+          text: '双指针',
+          link: '/algorithm/twoPointers/index',
         }],
       },
     ],
