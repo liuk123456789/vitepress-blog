@@ -85,6 +85,10 @@ export default withPwa(defineConfig({
             link: '/algorithm/binarySearch/description',
             text: '二分算法',
           },
+          {
+            link: '/algorithm/recursion',
+            text: '递归',
+          },
         ],
       },
     ],
@@ -141,7 +145,10 @@ export default withPwa(defineConfig({
           }],
         }, {
           text: '双指针',
-          link: '/algorithm/twoPointers/index',
+          link: '/algorithm/twoPointers',
+        }, {
+          text: '递归',
+          link: '/algorithm/recursion',
         }],
       },
     ],

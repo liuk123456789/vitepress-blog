@@ -69,7 +69,7 @@ outline: deep
 
 :::
 
-**解题**
+**代码**
 
 ```typescript
 // 题中意思就是从数组中查找特定值，直接套用模版即可
@@ -125,7 +125,7 @@ function search(nums: number[], target: number): number {
 
 :::
 
-**解题**
+**代码**
 
 ```typescript
 function searchInsert(nums: number[], target: number): number {
@@ -175,7 +175,7 @@ function searchInsert(nums: number[], target: number): number {
 ```
 :::
 
-**解题**
+**代码**
 
 ```typescript
 function mySqrt(x: number): number {
@@ -233,7 +233,7 @@ function mySqrt(x: number): number {
 
 :::
 
-**解题**
+**代码**
 
 ```typescript
 /**
@@ -316,7 +316,7 @@ const solution = function (isBadVersion: any) {
 2. 如果在[left, mid]区间，如果target >= left && target < mid, 往左查找（right = mid - 1），否则的话， 往右查找（left = mid + 1)
 3. 那么右区间同理，如果target > mid&& target < right , 往右查找（left = mid + 1），否则的话， 往右查找（right= mid - 1)
 
-**解题**
+**代码**
 
 ```typescript
 function search(nums: number[], target: number): number {
@@ -390,7 +390,7 @@ function search(nums: number[], target: number): number {
 
 :::
 
-**解题**
+**代码**
 
 使用了两次二分搜索分别查找最左侧的target和最右侧的target
 
