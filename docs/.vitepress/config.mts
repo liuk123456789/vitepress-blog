@@ -129,6 +129,14 @@ export default withPwa(defineConfig({
       },
       {
         collapsed: false,
+        text: 'TypeScript',
+        items: [{
+          link: '/TypeScript/base',
+          text: '基础',
+        }],
+      },
+      {
+        collapsed: false,
         text: '算法刷题录',
         items: [{
           link: '/algorithm/base',

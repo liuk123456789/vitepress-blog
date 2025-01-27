@@ -140,8 +140,6 @@ function isPowerOfTwo(n: number): boolean {
 
 请在没有使用内置方法 `Array.flat` 的前提下解决这个问题。
 
- 
-
 **示例 1：**
 
 ```
@@ -181,8 +179,6 @@ n = 2
 所有子数组的最大深度都为 1 。因此，它们都被扁平化了。
 ```
 
- 
-
 **提示：**
 
 - `0 <= arr 的元素个数 <= 105`
@@ -196,16 +192,17 @@ n = 2
 **代码**
 
 ```typescript
-type MultiDimensionalArray = (number | MultiDimensionalArray)[];
+type MultiDimensionalArray = (number | MultiDimensionalArray)[]
 
-var flat = function (arr:  MultiDimensionalArray, n: number):  MultiDimensionalArray {
-    if(n <= 0) return arr
-    const result: MultiDimensionalArray = []
-    for(const item of arr) {
-        result.push(...(Array.isArray(item) ? flat(item, n - 1) : [item]))
-    }
-    return result
-};
+const flat = function (arr: MultiDimensionalArray, n: number): MultiDimensionalArray {
+  if (n <= 0)
+    return arr
+  const result: MultiDimensionalArray = []
+  for (const item of arr) {
+    result.push(...(Array.isArray(item) ? flat(item, n - 1) : [item]))
+  }
+  return result
+}
 ```
 
 **递归乘法**
@@ -236,10 +233,12 @@ var flat = function (arr:  MultiDimensionalArray, n: number):  MultiDimensionalA
 
 ```typescript
 function multiply(A: number, B: number): number {
-    if(!A || !B) return 0
-    // 需要考虑的就是A和B 谁大，使用小的进行递归 减少递归次数
-    if(A < B) return B + multiply(A - 1, B)
-    return A + multiply(A, B - 1)
+  if (!A || !B)
+    return 0
+  // 需要考虑的就是A和B 谁大，使用小的进行递归 减少递归次数
+  if (A < B)
+    return B + multiply(A - 1, B)
+  return A + multiply(A, B - 1)
 };
 ```
 
@@ -250,8 +249,6 @@ function multiply(A: number, B: number): number {
 **多维数组** 是一个递归数据结构，包含整数和其他 **多维数组**。
 
 **中序遍历** 是从左到右遍历每个数组，在遇到任何整数时生成它，遇到任何数组时递归应用 **中序遍历** 。
-
- 
 
 **示例 1：**
 
@@ -274,8 +271,6 @@ generator.next().done; // true
 解释：输入的多维数组没有任何参数，所以生成器不需要生成任何值。
 ```
 
- 
-
 **提示：**
 
 - `0 <= arr.flat().length <= 105`
@@ -288,13 +283,14 @@ generator.next().done; // true
 type MultidimensionalArray = (MultidimensionalArray | number)[]
 
 function* inorderTraversal(arr: MultidimensionalArray): Generator<number, void, unknown> {
-    for(const item of arr) {
-        if(Array.isArray(item)) {
-           yield* inorderTraversal(item)
-        } else {
-            yield item
-        }
+  for (const item of arr) {
+    if (Array.isArray(item)) {
+      yield * inorderTraversal(item)
     }
+    else {
+      yield item
+    }
+  }
 };
 
 /**
@@ -304,7 +300,5 @@ function* inorderTraversal(arr: MultidimensionalArray): Generator<number, void, 
  * gen.next().value; // 3
  */
 ```
-
-
 
 ### 困难
