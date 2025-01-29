@@ -231,7 +231,7 @@ function getFirstThree(x: number[] | string) {
 所谓类型别名，就是指代任意类型的名字
 
 ```typescript
-interface PosType {
+type PosType {
   x: number
   y: number
 }
@@ -326,11 +326,11 @@ window.ts.transpileModule(src, {})
 
 // Type
 // 创建后不能被改变
-interface Window {
+type Window {
   title: string
 }
 
-interface Window {
+type Window {
   ts: TypeScriptAPI
 }
 
@@ -478,11 +478,11 @@ handleRequest(req.url, req.method)
 
 `ts`有两个对应的同名类型。它们的行为取决于是否打开了 [strictNullChecks](https://link.juejin.cn?target=https%3A%2F%2Fwww.typescriptlang.org%2Ftsconfig%23strictNullChecks) 选项。
 
-### `strictNullChecks` 关闭
+#### `strictNullChecks` 关闭
 
 当 [strictNullChecks](https://link.juejin.cn?target=https%3A%2F%2Fwww.typescriptlang.org%2Ftsconfig%23strictNullChecks) 选项关闭的时候，如果一个值可能是 `null` 或者 `undefined`，它依然可以被正确的访问，或者被赋值给任意类型的属性。这有点类似于没有空值检查的语言 (比如 C# ，Java) 。这些检查的缺少，是导致 bug 的主要源头，所以我们始终推荐开发者开启 [strictNullChecks](https://link.juejin.cn?target=https%3A%2F%2Fwww.typescriptlang.org%2Ftsconfig%23strictNullChecks) 选项。
 
-### `strictNullChecks` 打开
+#### `strictNullChecks` 打开
 
 当 [strictNullChecks](https://link.juejin.cn?target=https%3A%2F%2Fwww.typescriptlang.org%2Ftsconfig%23strictNullChecks) 选项打开的时候，如果一个值可能是 `null` 或者 `undefined`，你需要在用它的方法或者属性之前，先检查这些值，就像用可选的属性之前，先检查一下 是否是 `undefined` ，我们也可以使用类型收窄（`narrowing`）检查值是否是 `null`：
 
@@ -509,10 +509,6 @@ function liveDangerously(x?: number | null) {
 ```
 
 就像其他的类型断言，这也不会更改任何运行时的行为。重要的事情说一遍，只有当你明确的知道这个值不可能是 `null` 或者 `undefined` 时才使用 `!` 。
-
-## 枚举
-
-枚举是 `ts`添加的新特性，用于描述一个值可能是多个常量中的一个。不同于大部分的 `ts`特性，这并不是一个类型层面的增量，而是会添加到语言和运行时。因为如此，你应该了解下这个特性。但是可以等一等再用，除非你确定要使用它。你可以在[枚举类型](https://link.juejin.cn?target=https%3A%2F%2Fwww.typescriptlang.org%2Fdocs%2Fhandbook%2Fenums.html)页面了解更多的信息。
 
 ## 不常见的原始类型（Less Common Primitives）
 

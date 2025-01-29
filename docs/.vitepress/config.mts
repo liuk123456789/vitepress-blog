@@ -73,8 +73,12 @@ export default withPwa(defineConfig({
         text: 'TypeScript',
         items: [
           {
-            link: '/TypeScript/base',
-            text: '基础',
+            link: '/TypeScript/base/first',
+            text: '基础篇',
+          },
+          {
+            link: '/TypeScript/advanced/first',
+            text: '进阶篇',
           },
         ],
       },
@@ -131,8 +135,20 @@ export default withPwa(defineConfig({
         collapsed: false,
         text: 'TypeScript',
         items: [{
-          link: '/TypeScript/base',
-          text: '基础',
+          text: '基础篇',
+          items: [{
+            link: '/TypeScript/base/first',
+            text: '第一篇',
+          }, {
+            link: '/TypeScript/base/second',
+            text: '第二篇',
+          }],
+        }, {
+          text: '进阶篇',
+          items: [{
+            link: '/TypeScript/advanced/first',
+            text: '第一篇',
+          }],
         }],
       },
       {
