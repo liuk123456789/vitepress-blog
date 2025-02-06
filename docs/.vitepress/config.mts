@@ -151,6 +151,9 @@ export default withPwa(defineConfig({
           }, {
             link: '/TypeScript/advanced/second',
             text: '第二篇',
+          }, {
+            link: '/TypeScript/advanced/third',
+            text: '第三篇',
           }],
         }],
       },
