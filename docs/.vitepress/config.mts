@@ -80,6 +80,10 @@ export default withPwa(defineConfig({
             link: '/TypeScript/advanced/first',
             text: '进阶篇',
           },
+          {
+            link: '/TypeScript/practice/index',
+            text: '实践篇',
+          },
         ],
       },
       {
@@ -155,6 +159,9 @@ export default withPwa(defineConfig({
             link: '/TypeScript/advanced/third',
             text: '第三篇',
           }],
+        }, {
+          text: '实践篇',
+          link: '/TypeScript/practice/index',
         }],
       },
       {
