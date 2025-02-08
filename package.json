@@ -13,5 +13,8 @@
     "eslint": "^9.17.0",
     "unocss": "^65.4.0",
     "vitepress": "1.0.0-rc.40"
+  },
+  "dependencies": {
+    "@konalau/utils": "^1.0.7"
   }
 }

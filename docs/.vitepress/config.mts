@@ -84,6 +84,10 @@ export default withPwa(defineConfig({
             link: '/TypeScript/practice/index',
             text: '实践篇',
           },
+          {
+            link: '/TypeScript/final',
+            text: '配置篇',
+          },
         ],
       },
       {
@@ -98,6 +102,13 @@ export default withPwa(defineConfig({
             text: '递归',
           },
         ],
+      },
+      {
+        text: '工作总结',
+        items: [{
+          link: '/work/utils',
+          text: '工具函数',
+        }],
       },
     ],
     sidebar: [
@@ -162,6 +173,9 @@ export default withPwa(defineConfig({
         }, {
           text: '实践篇',
           link: '/TypeScript/practice/index',
+        }, {
+          text: '配置篇',
+          link: '/TypeScript/final',
         }],
       },
       {
@@ -186,6 +200,13 @@ export default withPwa(defineConfig({
         }, {
           text: '递归',
           link: '/algorithm/recursion',
+        }],
+      },
+      {
+        text: '工作总结',
+        items: [{
+          link: '/work/utils',
+          text: '工具函数',
         }],
       },
     ],

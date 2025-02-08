@@ -561,7 +561,6 @@ type trimed = TrimLeft<'  Hello World  '> // expected to be 'Hello World  '
 // `${WhiteSpace}${infer R}` 模板字面量类型
 type WhiteSpace = '\n' | '\t' | ' '
 type TrimLeft<S extends string> = S extends `${WhiteSpace}${infer R}` ? TrimRight<R> : S
-
 ```
 
 #### Trim
@@ -610,7 +609,7 @@ type replaced = Replace<'types are fun!', 'fun', 'awesome'> // expected to be 't
 **解答**
 
 ```typescript
-type Replace<S extends string, From extends string, To extends string> = From extends '' ? S : S extends `${infer F}${From}${infer R}` ? `${F}${To}${R}`: S
+type Replace<S extends string, From extends string, To extends string> = From extends '' ? S : S extends `${infer F}${From}${infer R}` ? `${F}${To}${R}` : S
 ```
 
 #### ReplaceAll
@@ -634,8 +633,8 @@ type ReplaceAll<
 > = From extends ''
   ? S
   : S extends `${infer S}${From}${infer E}`
-  ? `${S}${To}${ReplaceAll<E, From, To>}`
-  : S
+    ? `${S}${To}${ReplaceAll<E, From, To>}`
+    : S
 ```
 
 #### Append Argument
@@ -653,7 +652,7 @@ type Result = AppendArgument<Fn, boolean>
 **解答**
 
 ```typescript
-type AppendArgument<Fn, A> = Fn extends (...args: [...infer P]) => infer R ? (...args: [...P, A]) => R
+type AppendArgument<Fn, A> = Fn extends (...args: [...infer P]) => infer R ? (...args: [...P, A]) => R : never
 ```
 
 #### Permutation
@@ -661,7 +660,7 @@ type AppendArgument<Fn, A> = Fn extends (...args: [...infer P]) => infer R ? (..
 :::info 全排列
 
 ```typescript
-type perm = Permutation<'A' | 'B' | 'C'>; // ['A', 'B', 'C'] | ['A', 'C', 'B'] | ['B', 'A', 'C'] | ['B', 'C', 'A'] | ['C', 'A', 'B'] | ['C', 'B', 'A']
+type perm = Permutation<'A' | 'B' | 'C'> // ['A', 'B', 'C'] | ['A', 'C', 'B'] | ['B', 'A', 'C'] | ['B', 'C', 'A'] | ['C', 'A', 'B'] | ['C', 'B', 'A']
 ```
 
 :::
@@ -670,7 +669,7 @@ type perm = Permutation<'A' | 'B' | 'C'>; // ['A', 'B', 'C'] | ['A', 'C', 'B'] |
 
 ```typescript
 // 知识点1： 判断泛型T是never  [T] extends [never] ? true : fasle
-// 知识点2：分布式条件类型 
+// 知识点2：分布式条件类型
 // Test<T> = T extends number ? [T] : T
 // 假设T是1 | 2| 3
 // 导致最终的结果是[1] | [2] | [3]
@@ -722,11 +721,10 @@ type flatten = Flatten<[1, 2, [3, 4], [[[5]]]]> // [1, 2, 3, 4, 5]
 ```typescript
 // 递归判定是数组的元素是否时数组
 type Flatten<T extends unknown[]> = T extends [infer F, ...infer R]
-    ? F extends any[]
-        ? Flatten<[...F, ...R]>
-        : [F, ...Flatten<R>]
-    : T;
-
+  ? F extends any[]
+    ? Flatten<[...F, ...R]>
+    : [F, ...Flatten<R>]
+  : T
 ```
 
 #### Append to object
@@ -734,7 +732,7 @@ type Flatten<T extends unknown[]> = T extends [infer F, ...infer R]
 :::info 给对象添加元素
 
 ```typescript
-type Test = { id: '1' }
+interface Test { id: '1' }
 type Result = AppendToObject<Test, 'value', 4> // expected to be { id: '1', value: 4 }
 ```
 
@@ -748,7 +746,6 @@ type Result = AppendToObject<Test, 'value', 4> // expected to be { id: '1', valu
 type AppendToObject<T extends object, U extends PropertyKey, V> = T & Record<U, V> extends infer R ? {
   [K in keyof R]: R[K]
 } : never
-
 ```
 
 #### Absolute
@@ -756,8 +753,8 @@ type AppendToObject<T extends object, U extends PropertyKey, V> = T & Record<U, 
 :::info 获取绝对值
 
 ```typescript
-type Test = -100;
-type Result = Absolute<Test>; // expected to be "100"
+type Test = -100
+type Result = Absolute<Test> // expected to be "100"
 ```
 
 :::
@@ -773,8 +770,8 @@ type Absolute<T extends number | string | bigint> = `${T}` extends `-${infer U}`
 :::info 字符串转联合类型
 
 ```typescript
-type Test = '123';
-type Result = StringToUnion<Test>; // expected to be "1" | "2" | "3"
+type Test = '123'
+type Result = StringToUnion<Test> // expected to be "1" | "2" | "3"
 ```
 
 :::
@@ -783,7 +780,7 @@ type Result = StringToUnion<Test>; // expected to be "1" | "2" | "3"
 
 ```typescript
 // 知识点：infer关键字进行类型推断
-type StringToUnion<T extends string> = T extends `${infer F}${infer R}` ? F | StringToUnion<R> :never
+type StringToUnion<T extends string> = T extends `${infer F}${infer R}` ? F | StringToUnion<R> : never
 ```
 
 #### Merge
@@ -791,16 +788,16 @@ type StringToUnion<T extends string> = T extends `${infer F}${infer R}` ? F | St
 :::info 合并对象
 
 ```typescript
-type foo = {
-  name: string;
-  age: string;
+interface foo {
+  name: string
+  age: string
 }
-type coo = {
-  age: number;
+interface coo {
+  age: number
   sex: string
 }
 
-type Result = Merge<foo,coo>; // expected to be {name: string, age: number, sex: string}
+type Result = Merge<foo, coo> // expected to be {name: string, age: number, sex: string}
 ```
 
 :::
@@ -823,11 +820,11 @@ type Merge<F extends object, S extends object> = {
 :::info  短横线命名
 
 ```typescript
-type FooBarBaz = KebabCase<"FooBarBaz">;
-const foobarbaz: FooBarBaz = "foo-bar-baz";
+type FooBarBaz = KebabCase<'FooBarBaz'>
+const foobarbaz: FooBarBaz = 'foo-bar-baz'
 
-type DoNothing = KebabCase<"do-nothing">;
-const doNothing: DoNothing = "do-nothing";
+type DoNothing = KebabCase<'do-nothing'>
+const doNothing: DoNothing = 'do-nothing'
 ```
 
 :::
@@ -842,7 +839,7 @@ type KebabCase<Str extends string> =
     ? R extends Uncapitalize<R>
       ? `${Lowercase<F>}${KebabCase<R>}`
       : `${Lowercase<F>}-${KebabCase<R>}`
-    : Str;
+    : Str
 ```
 
 #### Diff
@@ -860,6 +857,24 @@ type Diff<O, O1> = {
       ? never
       : K
     : K]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never;
-};
+}
 ```
 
+#### Anyof
+
+:::info 其中之一
+
+```typescript
+type Sample1 = AnyOf<[1, '', false, [], {}]> // expected to be true.
+type Sample2 = AnyOf<[0, '', false, [], {}]> // expected to be false.
+```
+
+:::
+
+**解答**
+
+```typescript
+// 判断真假时注意  可以直接extends[] 判断数组真假，但是对象不可以，对象必须判断有无键值
+type IsTrue<T> = T extends '' | [] | false | 0 ? false : T extends object ? keyof T extends never ? false : true : false
+type AnyOf<T extends readonly any[]> = T extends [infer F, ...infer Rest] ? IsTrue<F> extends true ? true : AnyOf<Rest> : IsTrue<T[0]>
+```
