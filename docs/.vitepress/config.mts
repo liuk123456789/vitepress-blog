@@ -108,6 +108,12 @@ export default withPwa(defineConfig({
         items: [{
           link: '/work/utils',
           text: '工具函数',
+        }, {
+          link: '/work/storage',
+          text: '存储器',
+        }, {
+          link: '/work/poll-request',
+          text: '接口轮询',
         }],
       },
     ],
@@ -207,6 +213,12 @@ export default withPwa(defineConfig({
         items: [{
           link: '/work/utils',
           text: '工具函数',
+        }, {
+          link: '/work/storage',
+          text: '存储器',
+        }, {
+          link: '/work/poll-request',
+          text: '接口轮询',
         }],
       },
     ],
