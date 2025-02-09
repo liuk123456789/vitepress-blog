@@ -114,6 +114,9 @@ export default withPwa(defineConfig({
         }, {
           link: '/work/poll-request',
           text: '接口轮询',
+        }, {
+          link: '/work/concurrency-control',
+          text: '并发控制',
         }],
       },
     ],
@@ -219,6 +222,12 @@ export default withPwa(defineConfig({
         }, {
           link: '/work/poll-request',
           text: '接口轮询',
+        }, {
+          link: '/work/concurrency-control',
+          text: '并发控制',
+        }, {
+          link: '/work/axios',
+          text: 'axios封装',
         }],
       },
     ],
