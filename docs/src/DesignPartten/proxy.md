@@ -21,16 +21,16 @@ outline: deep
 
 ```javascript
 const proxy = {
-    receiveRequest: (request) => {
-        // 校验身份
-        const pass = validatePassport(request)
-        if(pass) {
-            server.listenReady(() => {
-                console.log('proxy request', request)
-                server.handleRequest(request)
-            })
-        }
+  receiveRequest: (request) => {
+    // 校验身份
+    const pass = validatePassport(request)
+    if (pass) {
+      server.listenReady(() => {
+        console.log('proxy request', request)
+        server.handleRequest(request)
+      })
     }
+  }
 }
 ```
 
@@ -43,29 +43,29 @@ const proxy = {
 1. **虚拟代理实现图片懒加载**
 
    ```javascript
-   const myImg = (() => {
-       const imgNode = document.createElement('img')
-       document.body.appendChild(imgNode)
-       
-       return {
-           setSrc: (src) => {
-               imgNode.src = src
-           }
+   function myImg() {
+     const imgNode = document.createElement('img')
+     document.body.appendChild(imgNode)
+
+     return {
+       setSrc: (src) => {
+         imgNode.src = src
        }
-   })
-   
+     }
+   }
+
    const proxyImg = (() => {
-       const img = new Image
-       img.onload = function () {
-           myImg.setSrc(this.src)
+     const img = new Image()
+     img.onload = function () {
+       myImg.setSrc(this.src)
+     }
+
+     return {
+       setSrc: (src) => {
+         myImg.setSrc('***/loading.gif')
+         img.src = src
        }
-       
-       return {
-           setSrc:(src) => {
-               myImg.setSrc('***/loading.gif')
-               img.src = src
-           }
-       }
+     }
    })()
    proxyImg.serSrc('http:// imgcache.qq.com/music/photo/k/000GGDys0yA0Nk.jpg')
    ```
@@ -79,32 +79,33 @@ const proxy = {
    我们使用`proxySynchronousFile`来收集`2s`内的请求，最后一次性进行传输。
 
    ```javascript
-   const synchronousFile = function(ids) {
-       // 文件传输
+   const synchronousFile = function (ids) {
+     // 文件传输
    }
-   
-   const proxySynchronousFile = (function() {
+
+   const proxySynchronousFile = (function () {
      const fileArray = []
      let timer
-     return function(id) {
-         fileArray.push(id)
-         // 倒计时未完成
-         if(timer) return
-         timer = setTimeout(() => {
-             synchronousFile(fileArray.join(','))
-             clearTimeout(timer)
-             timer = null
-             fileArray.length = 0
-         }, 2000)
+     return function (id) {
+       fileArray.push(id)
+       // 倒计时未完成
+       if (timer)
+         return
+       timer = setTimeout(() => {
+         synchronousFile(fileArray.join(','))
+         clearTimeout(timer)
+         timer = null
+         fileArray.length = 0
+       }, 2000)
      }
    })()
    const checkedIds = document.getElementByTagName('input')
-   for(let checkbox of checkboxes) {
-       checkbox.onclick = function() {
-           if(this.checked) {
-               proxySynchronousFile(this.id)
-           }
+   for (const checkbox of checkboxes) {
+     checkbox.onclick = function () {
+       if (this.checked) {
+         proxySynchronousFile(this.id)
        }
+     }
    }
    ```
 
@@ -117,12 +118,12 @@ const proxy = {
        ...
        return res;
    }
-   
+
    const getKeyName = (x) => {
        ...
        return key;
    }
-   
+
    const proxyFn = (function() {
        const resMap = {}
        return function(x) {
@@ -137,43 +138,40 @@ const proxy = {
 2. **使用高阶函数动态创建代理**
 
    ```javascript
-   const mul = function() {
-       let res = 1
-       for(let i = 0; i < arguments.length; i++) {
-           res *= arguments[i]
-       }
-       return res
+   const mul = function () {
+     let res = 1
+     for (let i = 0; i < arguments.length; i++) {
+       res *= arguments[i]
+     }
+     return res
    }
-   
-   const plus = function() {
-       let res = 0
-       for(let i = 0; i < arguments.length; i++) {
-           res += arguments[i]
-       }
-       return res
+
+   const plus = function () {
+     let res = 0
+     for (let i = 0; i < arguments.length; i++) {
+       res += arguments[i]
+     }
+     return res
    }
-   
+
    // 创建缓存代理的工厂
-   const createProxyFactory = function(fn) {
-       const cache = {}
-       return function() {
-           const args = Array.prototype.join.call(arguments, ',')
-           if(args in cache) {
-               return cache[args]
-           }
-           return cache[args] = fn.apply(this, arguments)
-       }	
+   const createProxyFactory = function (fn) {
+     const cache = {}
+     return function () {
+       const args = Array.prototype.join.call(arguments, ',')
+       if (args in cache) {
+         return cache[args]
+       }
+       return cache[args] = fn.apply(this, arguments)
+     }
    }
-   
+
    // 使用
    const proxyMul = createProxyFactory(mul)
    const proxyPlus = createProxyFactory(plus)
-   
-   console.log(proxyMul(1,2,3,4))
-   console.log(proxyMul(1,2,3,4))
-   console.log(proxyPlus(1,2,3,4))
-   console.log(proxyPlus(1,2,3,4))
+
+   console.log(proxyMul(1, 2, 3, 4))
+   console.log(proxyMul(1, 2, 3, 4))
+   console.log(proxyPlus(1, 2, 3, 4))
+   console.log(proxyPlus(1, 2, 3, 4))
    ```
-
-   
-

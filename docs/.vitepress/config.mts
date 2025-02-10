@@ -56,15 +56,15 @@ export default withPwa(defineConfig({
         text: '前端工程化',
         items: [
           {
-            link: '/engineer/webpack',
+            link: '/engineer/webpack/first',
             text: 'webpack',
           },
           {
-            link: '/engineer/rollup',
+            link: '/engineer/rollup/first',
             text: 'rollup',
           },
           {
-            link: '/engineer/vite',
+            link: '/engineer/vite/first',
             text: 'vite',
           },
         ],
@@ -229,6 +229,32 @@ export default withPwa(defineConfig({
           link: '/work/axios',
           text: 'axios封装',
         }],
+      },
+      {
+        text: '前端工程化',
+        items: [
+          {
+            text: 'webpack',
+            items: [{
+              link: '/engineer/webpack/first',
+              text: '第一篇',
+            }],
+          },
+          {
+            text: 'rollup',
+            items: [{
+              link: '/engineer/rollup/first',
+              text: '第一篇',
+            }],
+          },
+          {
+            text: 'vite',
+            items: [{
+              link: '/engineer/vite/first',
+              text: '第一篇',
+            }],
+          },
+        ],
       },
     ],
     socialLinks: [
