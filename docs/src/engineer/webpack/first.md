@@ -862,7 +862,7 @@ pnpm install @types/node
       const styleLoadersArray = ['style-loader', 'css-loader', 'postcss-loader']
       ```
 
-### 12. 图片字体媒体json文件等资源处理
+### 11. 图片字体媒体json文件等资源处理
 
 1. 图片字体媒体
 
@@ -925,11 +925,11 @@ pnpm install @types/node
 }
 ```
 
-#### 12. 热更新
+### 12. 热更新
 
 在`webpack4`中，还需要在插件中添加了`HotModuleReplacementPlugin`，在`webpack5`中，只要`devServer.hot`为`true`了，该插件就已经内置了。
 
-## 完结
+### 完结
 
 只此，我们完成基础的框架搭建以及常见资源的`loader`配置，下一篇主要是针对的是打包性能优化
 
