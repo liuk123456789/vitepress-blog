@@ -228,12 +228,7 @@ export default withPwa(defineConfig({
         }, {
           link: '/work/axios',
           text: 'axios封装',
-        },
-        //  {
-        //   link: '/work/tailwindcss',
-        //   text: 'tailwindcss的使用',
-        // }
-      ],
+        }],
       },
       {
         text: '前端工程化',
@@ -265,6 +260,9 @@ export default withPwa(defineConfig({
             items: [{
               link: '/engineer/rollup/first',
               text: '第一篇',
+            }, {
+              link: '/engineer/rollup/second',
+              text: '第二篇',
             }],
           },
           {

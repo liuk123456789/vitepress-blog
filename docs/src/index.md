@@ -16,6 +16,5 @@ hero:
       link: /JavaScript/proto
     - theme: alt
       text: 前端工程化
-      link: /engineer/webpack
-
+      link: /engineer/webpack/index
 ---
